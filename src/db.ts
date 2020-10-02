@@ -1,3 +1,4 @@
+import { AbstractIteratorOptions } from 'abstract-leveldown'
 import BigNumber from 'bignumber.js'
 import { leveldb } from 'borc'
 import level from 'level'
@@ -38,7 +39,11 @@ export class DB<T extends Saveable> {
         })
     }
 
-    async find(query?: { where?: (item: T) => boolean; sort?: (item1: T, item2: T) => number; limit?: number }) {
+    async find(query?: {
+        where?: (item: T) => boolean
+        sort?: (item1: T, item2: T) => number
+        limit?: number
+    }): Promise<T[]> {
         if (query) {
             const items = await this.all(query.where, query.limit)
             if (query.sort) return items.sort(query.sort)
@@ -67,19 +72,19 @@ export class DB<T extends Saveable> {
         })
     }
 
-    async put(key: string, value: T): Promise<void> {
-        return this.db.put(key, value)
+    async put(value: T): Promise<void> {
+        return this.db.put(value.id, value)
     }
 
-    async get(key: string): Promise<T> {
+    async get(key: string | number): Promise<T> {
         return this.db.get(key)
     }
 
-    async del(key: string): Promise<void> {
+    async del(key: string | number): Promise<void> {
         return this.db.del(key)
     }
 
-    createReadStream(options?: any) {
+    createReadStream(options?: AbstractIteratorOptions): NodeJS.ReadableStream {
         return this.db.createReadStream(options)
     }
 }
