@@ -1,3 +1,6 @@
+/**
+ * @packageDocumentation Cbor-DB - An embedded database for [typescript](https://www.typescriptlang.org/) and nodejs. Built as a tiny wrapper around [level using borc for encoding.
+ */
 import { AbstractIteratorOptions, ErrorCallback } from 'abstract-leveldown'
 import BigNumber from 'bignumber.js'
 import { leveldb } from 'borc'
