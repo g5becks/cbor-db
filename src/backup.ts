@@ -1,13 +1,13 @@
 import * as fs from 'fs'
 import split from 'split2'
-import { DB } from './db'
+import { DB, Storable } from './db'
 import zlib = require('zlib')
 
 /**
  * Backup the db to a gzip file
  * @param location - Location to write backup to (Should end in .gz)
  */
-function backup(db: DB<any>, location: fs.PathLike): Promise<void> {
+function backup(db: DB<Storable>, location: fs.PathLike): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         createBackupStream(db).pipe(fs.createWriteStream(location)).once('close', resolve).once('error', reject)
     })

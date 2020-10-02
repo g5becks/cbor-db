@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { leveldb } from 'borc'
 import * as fs from 'fs'
 import level from 'level'
+import levelMem from 'level-mem'
 import { LevelUp } from 'levelup'
 export type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
 export type EncodeableContainer =
@@ -11,16 +12,19 @@ export type EncodeableContainer =
     | Array<EncodeableScalar | EncodeableContainer>
 
 type Encodeable = EncodeableScalar | EncodeableContainer | Record<string, EncodeableScalar | EncodeableContainer>
-export type Saveable = {
+export type Storable = {
     id: string | number
 } & Encodeable
 
 const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null
 
-export class DB<T extends Saveable> {
+export class DB<T extends Storable> {
     private readonly db: LevelUp
 
-    private constructor(location: string) {
+    private constructor(location: string | ':mem:') {
+        if (location === ':mem:') {
+            this.db = levelMem()
+        }
         this.db = level(location, {
             keyEncoding: leveldb,
             valueEncoding: leveldb,
@@ -30,7 +34,7 @@ export class DB<T extends Saveable> {
     /**  Creatss a new DB<T>, when running in node - this function check if
      *  the provided location exists and try to create it if it doesn't
      */
-    static create<T extends Saveable>(location: string): DB<T> {
+    static create<T extends Storable>(location: string): DB<T> {
         if (isNode) {
             try {
                 if (!fs.existsSync(location)) {
