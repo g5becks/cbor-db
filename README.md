@@ -28,34 +28,35 @@ npm i --save cbor-db
 ## Basic Usage
 
 ```typescript
-import { DB } from "cbor-db";
+import { DB } from 'cbor-db'
 
 // Define a document type
-type Person = { firstname: string; lastname: string; age: number };
+// All documents must have an ID feild
+// that is of type string | number
+type Person = {
+    id: string
+    firstname: string
+    lastname: string
+    age: number
+}
 
 // Initialize a people database (Stored in /databases/people)
-const people = new Depot<Person>("/databases/people");
+const people = DB.create<Person>('/databases/people')
 
 // Store some people
-people.put("John", { firstname: "John", lastname: "Doe", age: 32 });
-people.put("Jane", { firstname: "Jane", lastname: "Doe", age: 32 });
-people.put("Tim", { firstname: "Tim", lastname: "Burton", age: 59 });
-people.put("Tony", { firstname: "Stark", lastname: "Doe", age: 45 });
+people.put({ id: 1, firstname: 'John', lastname: 'Doe', age: 32 })
+people.put({ id: 2, firstname: 'Jane', lastname: 'Doe', age: 32 })
+people.put({ id: 3, firstname: 'Tim', lastname: 'Burton', age: 59 })
+people.put({ id: 4, firstname: 'Stark', lastname: 'Doe', age: 45 })
 
 // Query people
-people
-  .find({
-    where: (person) => person.age > 32,
-  })
-  .then((personsOlderThat32) => {
-    // personsOlderThat32 = [
-    //     { firstname: "Tim", lastname: "Burton", age: 61 },
-    //     { firstname: "Stark", lastname: "Doe", age: 53 }
-    // ];
-  });
+const findPeopleOlderThan = async (age: number): Promise<Person[]> =>
+    people.find({
+        where: (person) => person.age > age,
+    })
 
 // Find a person by their key (rejects if person is not found)
-people.get("John").then(/** { firstname: "John", lastname: "Doe", age: 32 } */);
+people.get('John').then(/** { firstname: "John", lastname: "Doe", age: 32 } */)
 ```
 
 ## API

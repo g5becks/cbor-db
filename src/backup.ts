@@ -1,8 +1,7 @@
+import * as fs from 'fs'
+import split from 'split2'
 import { DB } from './db'
-import fs = require('fs')
-import split = require('split')
 import zlib = require('zlib')
-import through = require('through')
 
 /**
  * Backup the db to a gzip file
