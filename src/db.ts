@@ -24,6 +24,7 @@ export class DB<T extends Storable> {
     private constructor(location: string | ':mem:') {
         if (location === ':mem:') {
             this.db = levelMem()
+            return
         }
         this.db = level(location, {
             keyEncoding: leveldb,
@@ -34,7 +35,10 @@ export class DB<T extends Storable> {
     /**  Creatss a new DB<T>, when running in node - this function check if
      *  the provided location exists and try to create it if it doesn't
      */
-    static create<T extends Storable>(location: string): DB<T> {
+    static create<T extends Storable>(location: string | ':mem:'): DB<T> {
+        if (location === ':mem:') {
+            return new DB<T>(location)
+        }
         if (isNode) {
             try {
                 if (!fs.existsSync(location)) {
@@ -111,7 +115,7 @@ export class DB<T extends Storable> {
         return this.db.del(key)
     }
 
-    async delMany(keys: string | number): Promise<void> {
+    async delMany(keys: (string | number)[]): Promise<void> {
         return this.db.batch(keys.map((key) => ({ type: 'del', key })))
     }
 
