@@ -1,4 +1,4 @@
-const level = require('level')
+import level from 'level'
 
 export type Saveable = {
     id: string | number
