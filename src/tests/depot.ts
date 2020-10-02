@@ -1,10 +1,10 @@
 /// </// <reference path="mocha" />
 import assert = require("assert");
-import { Depot } from "../depot";
+import { DB } from "../db";
 
 describe("Depot", function() {
     type Person = { firstname: string, lastname: string, age: number, address: string }
-    const testDB = new Depot<Person>("./test-db");
+    const testDB = new DB<Person>("./test-db");
 
     it("Stores a document", function() {
         return testDB.put("Drew", {

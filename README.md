@@ -1,14 +1,16 @@
-# Depot DB
+# Cbor-DB
 
-An embedded database for typescript and nodejs. Built as a tiny wrapper around leveldb using (borc)[].
+An embedded database for typescript and nodejs. Built as a tiny wrapper around leveldb using [borc](https://www.npmjs.com/package/borc).
 
 ## Overview
 
-Depot DB is a performant database designed for embedded projects and low traffic web apps.
+Cbor-DB is a performant database designed for embedded projects and low traffic web apps. It uses [cbor](https://cbor.io/) for encoding instead of json
+which enables smaller storage size as well as storage of arbitrary blobs.
 
-It has a different, yet familiar query language. Typescript.
+Cbor-DB is based on [Depot-DB](https://www.npmjs.com/package/depot-db), like Depot-DB, it has a different, yet familiar query language. Typescript.
 
-In depot the "where" is a function that is passed all of the documents in the db.
+In cbor-db the "where" is a function that is passed all of the documents in the db.
+
 If the function returns true, the document is added to the collection, otherwise
 it is ignored.
 
