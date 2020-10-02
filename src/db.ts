@@ -1,10 +1,19 @@
+import BigNumber from 'bignumber.js'
 import { leveldb } from 'borc'
 import level from 'level'
 import { LevelUp } from 'levelup'
+type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
+type EncodeableContainer =
+    | Set<EncodeableScalar | EncodeableContainer>
+    | Map<Omit<EncodeableScalar, 'undefined' | 'null'>, EncodeableScalar | EncodeableContainer>
+    | Array<EncodeableScalar | EncodeableContainer>
+
+type Encodeable = EncodeableScalar | EncodeableContainer | Record<string, EncodeableScalar | EncodeableContainer>
 export type Saveable = {
     id: string | number
-}
-export class DB<T> {
+} & Encodeable
+
+export class DB<T extends Saveable> {
     private readonly db: LevelUp
 
     constructor(location: string) {

@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/g5becks/cbor-db#README",
   "dependencies": {
+    "@types/bignumber.js": "^5.0.0",
     "archiver": "^5.0.2",
     "borc": "^2.1.2",
     "level": "^6.0.1",
