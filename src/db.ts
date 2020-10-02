@@ -13,7 +13,7 @@ export type EncodeableContainer =
 
 type Encodeable = EncodeableScalar | EncodeableContainer | Record<string, EncodeableScalar | EncodeableContainer>
 export type Storable = {
-    id: string | number
+    readonly id: string | number
 } & Encodeable
 
 const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null

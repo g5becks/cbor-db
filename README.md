@@ -1,6 +1,6 @@
 # Cbor-DB
 
-An embedded database for typescript and nodejs. Built as a tiny wrapper around leveldb using [borc](https://www.npmjs.com/package/borc).
+An embedded database for typescript and nodejs. Built as a tiny wrapper around leveldb using [borc](https://www.npmjs.com/package/borc) for encoding.
 
 ## Overview
 
@@ -17,7 +17,7 @@ it is ignored.
 The same goes for "sort". The sort function is passed two documents ("a" and "b") and returns
 a number determining which one goes first. If the sort function returns a number greater than
 zero "a" is at a higher index than "b", less than zero and "b" comes first. If it returns 0
-they "a" and "b" equivelent.
+they "a" and "b" equivalent.
 
 ## Installation
 
@@ -31,7 +31,7 @@ npm i --save cbor-db
 import { DB } from 'cbor-db'
 
 // Define a document type.
-// All documents must have an ID feild
+// All documents must have a readonly id field
 // that is of type string | number
 type Person = {
     id: string
