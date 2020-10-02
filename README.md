@@ -1,10 +1,10 @@
 # Cbor-DB
 
-![Node.js%20CI](https://github.com/typerpc/typerpc/workflows/Node.js%20CI/badge.svg)
-[![Version](https://img.shields.io/npm/v/@typerpc/cli.svg)](https://npmjs.org/package/@typerpc/cli)
-[![Downloads/week](https://img.shields.io/npm/dw/@typerpc/cli.svg)](https://npmjs.org/package/@typerpc/cli)
-[![License](https://img.shields.io/npm/l/@typerpc/cli.svg)](https://github.com/typerpc/cli/blob/master/package.json)
-[![Known Vulnerabilities](https://snyk.io/test/github/typerpc/typerpc/badge.svg?targetFile=package.json)](https://snyk.io/test/github/typerpc/typerpc?targetFile=package.json)
+![Node.js%20CI](https://github.com/g5becks/cbor-db/workflows/Node.js%20CI/badge.svg)
+[![Version](https://img.shields.io/npm/v/@typerpc/cli.svg)](https://npmjs.org/package/g5becks/cbor-db)
+[![Downloads/week](https://img.shields.io/npm/dw/@typerpc/cli.svg)](https://npmjs.org/package/g5becks/cbor-db)
+[![License](https://img.shields.io/npm/l/g5becks/cbor-db.svg)](https://github.com/g5becks/cbor-db/blob/master/package.json)
+[![Known Vulnerabilities](https://snyk.io/test/github/g5becks/cbor-db/badge.svg?targetFile=package.json)](https://snyk.io/test/github/g5becks/cbor-db?targetFile=package.json)
 
 An embedded database for [typescript](https://www.typescriptlang.org/) and [nodejs](https://nodejs.org/en/). Built as a tiny wrapper around [level](https://www.npmjs.com/package/level) using [borc](https://www.npmjs.com/package/borc) for encoding.
 
