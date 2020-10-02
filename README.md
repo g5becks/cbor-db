@@ -83,6 +83,6 @@ const tryItOut = async () => {
 }
 ```
 
-## API
+## API Docs
 
-API documentation can be found [here](https://youngwerth.gitlab.io/depot)
+Full API documentation can be found [here](https://g5becks.github.io/cbor-db/)
