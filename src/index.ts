@@ -1,5 +1,5 @@
 /**
- * @packageDocumentation Cbor-DB - An embedded database for [typescript](https://www.typescriptlang.org/) and nodejs. Built as a tiny wrapper around [level using borc for encoding.
+ * @packageDocumentation Cbor-DB - An embedded database for [typescript](https://www.typescriptlang.org/) and [nodejs](https://nodejs.org/en/). Built as a tiny wrapper around [level](https://www.npmjs.com/package/level) using [borc](https://www.npmjs.com/package/borc) for encoding.
  */
 import { AbstractIteratorOptions, ErrorCallback } from 'abstract-leveldown'
 import BigNumber from 'bignumber.js'
@@ -109,7 +109,11 @@ export class DB<T extends Storable> {
                 .on('end', () => resolve(result))
         })
     }
-
+    /**
+     *  Executes queries on the database.
+     * @param query An
+     * @returns Promise<T[]>
+     */
     async find(query?: {
         where?: (item: T) => boolean
         sort?: (item1: T, item2: T) => number
