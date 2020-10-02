@@ -1,7 +1,7 @@
 {
     "name": "cbor-db",
-    "version": "1.0.1",
-    "description": "",
+    "version": "1.0.2",
+    "description": "An embedded database for typescript and nodejs. Built as a tiny wrapper around level using borc for encoding.",
     "main": "./dist/src/index.js",
     "types": "./dist/src/index.ts",
     "scripts": {
