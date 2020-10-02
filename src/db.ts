@@ -1,27 +1,17 @@
+import { leveldb } from 'borc'
 import level from 'level'
-
+import { LevelUp } from 'levelup'
 export type Saveable = {
     id: string | number
 }
 export class DB<T> {
-    private readonly db: any
+    private readonly db: LevelUp
 
-    constructor(
-        location: string,
-        encoding?: {
-            encoder: (data: T) => Buffer
-            decoder: (data: Buffer) => T
-        },
-    ) {
-        let valueEncoding
-
-        if (encoding) {
-            valueEncoding = { buffer: true, type: 'CustomDepotEncoding', ...encoding }
-        } else {
-            valueEncoding = 'json'
-        }
-
-        this.db = level(location, { keyEncoding: 'utf8', valueEncoding })
+    constructor(location: string) {
+        this.db = level(location, {
+            keyEncoding: leveldb,
+            valueEncoding: leveldb,
+        })
     }
 
     private async all(where?: (item: T) => boolean, limit?: number): Promise<T[]> {
