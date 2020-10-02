@@ -91,7 +91,7 @@ export class DB<T extends Storable> {
         return new Promise<number>((resolve, reject) => {
             this.db
                 .createKeyStream()
-                .on('data', () => (count += 1))
+                .on('data', () => count++)
                 .on('error', reject)
                 .on('end', () => resolve(count))
         })
@@ -114,7 +114,8 @@ export class DB<T extends Storable> {
     }
 
     async get(key: string | number): Promise<T> {
-        return this.db.get(key)
+        const [data] = await this.db.get(key)
+        return data
     }
 
     async del(key: string | number): Promise<void> {
