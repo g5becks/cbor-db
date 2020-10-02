@@ -16,5 +16,15 @@
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true
+    },
+    "typedocOptions": {
+        "mode": "modules",
+        "out": "docs",
+        "entryPoint": "./src/index.ts",
+        "excludeExternals": true,
+        "excludeNotExported": true,
+        "excludePrivate": true,
+        "theme": "minimal",
+        "readme": "README.md"
     }
 }

@@ -5,6 +5,11 @@ import * as fs from 'fs'
 import level from 'level'
 import levelMem from 'level-mem'
 import { LevelUp } from 'levelup'
+
+/**
+ * Valid scalars/primitive types that can be stored.
+ * see [borc supported types](https://github.com/dignifiedquire/borc#supported-types)
+ */
 export type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
 export type EncodeableContainer =
     | Set<EncodeableScalar | EncodeableContainer>
