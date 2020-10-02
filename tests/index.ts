@@ -1,10 +1,12 @@
-/// </// <reference path="mocha" />
-import assert = require('assert')
-import { DB } from '../db'
+import { DB } from '../src'
+type Person = { id: number; firstname: string; lastname: string; age: number; address: string }
+const testDB = DB.create<Person>(':mem:')
 
+test('DB should return the correct person object', async () => {
+    await testDB.put({ id: 1, firstname: 'gary', lastname: 'becks', address: '', age: 32 })
+})
 describe('Depot', function () {
     type Person = { firstname: string; lastname: string; age: number; address: string }
-    const testDB = new DB<Person>('./test-db')
 
     it('Stores a document', function () {
         return testDB.put('Drew', {

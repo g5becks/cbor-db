@@ -99,6 +99,10 @@ export class DB<T extends Storable> {
         return this.db.put(value.id, value)
     }
 
+    async putMany(values: T[]): Promise<void> {
+        return this.db.batch(values.map((val) => ({ type: 'put', key: val.id, value: val })))
+    }
+
     async get(key: string | number): Promise<T> {
         return this.db.get(key)
     }
