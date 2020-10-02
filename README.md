@@ -45,9 +45,8 @@ type Person = {
 // doesn't exist.
 const people = DB.create<Person>('/databases/people')
 
-// It is also possible to create an in memory DB that
-// uses memdown , useful for development and testing.
-
+// You can also create an in memory DB that
+// uses memdown. Useful for development and testing.
 const inMemPeope = DB.create<Person>(':mem:')
 
 // Store some people
@@ -72,6 +71,9 @@ const tryItOut = async () => {
         // Tim
         // Stark
     })
+
+    const person = await getPersonById(1)
+    console.log(person.firstname) // 'John'
 }
 ```
 
