@@ -1,18 +1,18 @@
 # Cbor-DB
 
-An embedded database for typescript and nodejs. Built as a tiny wrapper around leveldb using [borc](https://www.npmjs.com/package/borc) for encoding.
+An embedded database for typescript and nodejs. Built as a tiny wrapper around [level](https://www.npmjs.com/package/level) using [borc](https://www.npmjs.com/package/borc) for encoding.
 
 ## Overview
 
 Cbor-DB is a performant database designed for embedded projects and low traffic web apps. It uses [cbor](https://cbor.io/) for encoding instead of json
 which enables smaller storage size as well as storage of arbitrary blobs.
 
-Cbor-DB is based on [Depot-DB](https://www.npmjs.com/package/depot-db), like Depot-DB, it has a different, yet familiar query language. Typescript.
+Cbor-DB is loosely based on [Depot-DB](https://www.npmjs.com/package/depot-db), like Depot-DB, it has a different, yet familiar query language. Typescript.
 
 In cbor-db the "where" is a function that is passed all of the documents in the db.
 
 If the function returns true, the document is added to the collection, otherwise
-it is ignored.
+it is ignored. This is simple and yet performs well thanks to the use of [streams](https://www.npmjs.com/package/level#dbcreatereadstreamoptions).
 
 The same goes for "sort". The sort function is passed two documents ("a" and "b") and returns
 a number determining which one goes first. If the sort function returns a number greater than
@@ -45,6 +45,11 @@ type Person = {
 // doesn't exist.
 const people = DB.create<Person>('/databases/people')
 
+// It is also possible to create an in memory DB that
+// uses memdown , useful for development and testing.
+
+const inMemPeope = DB.create<Person>(':mem:')
+
 // Store some people
 people.put({ id: 1, firstname: 'John', lastname: 'Doe', age: 32 })
 people.put({ id: 2, firstname: 'Jane', lastname: 'Doe', age: 32 })
@@ -59,7 +64,15 @@ const findPeopleOlderThan = async (age: number): Promise<Person[]> =>
 
 // Find a person by their key (rejects if person is not found)
 const getPersonById = async (id: number): Promise<Person> => people.get(1)
-// => Promise /** { firstname: "John", lastname: "Doe", age: 32 } *
+
+const tryItOut = async () => {
+    const found = await findPeopleOlderThan(40)
+    found.forEach((p) => {
+        console.log(p.firstname)
+        // Tim
+        // Stark
+    })
+}
 ```
 
 ## API
