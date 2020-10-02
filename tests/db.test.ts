@@ -39,4 +39,9 @@ describe('DB', () => {
         const [person] = await testDB.find({ where: (p) => p.lastname === 'simms' })
         expect(person).toEqual(people[4])
     })
+
+    test('finds with limit', async () => {
+        const result = await testDB.find({ limit: 3 })
+        expect(result.length).toBe(3)
+    })
 })
