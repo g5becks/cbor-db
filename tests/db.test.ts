@@ -44,4 +44,10 @@ describe('DB', () => {
         const result = await testDB.find({ limit: 3 })
         expect(result.length).toBe(3)
     })
+
+    test('deletes many', async () => {
+        await testDB.delMany([1, 2, 3])
+        const count = await testDB.count()
+        expect(count).toBe(3)
+    })
 })
