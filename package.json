@@ -2,14 +2,17 @@
     "name": "cbor-db",
     "version": "1.0.0",
     "description": "",
-    "main": "dist/index.js",
-    "types": "dist/index.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.ts",
     "scripts": {
         "build": "rm -rf dist && tsc",
         "lint:fix": "eslint --fix src/**",
         "docs": "rm -rf ./docs; typedoc --out ./docs",
         "test": "jest"
     },
+    "files": [
+        "./dist"
+    ],
     "publishConfig": {
         "access": "public"
     },

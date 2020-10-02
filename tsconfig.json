@@ -26,5 +26,7 @@
         "excludePrivate": true,
         "theme": "minimal",
         "readme": "README.md"
-    }
+    },
+    "exclude": ["node_modules", "**/*.test.ts"],
+    "include": ["src/**/*"]
 }
