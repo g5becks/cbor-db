@@ -6,17 +6,22 @@ import level from 'level'
 import levelMem from 'level-mem'
 import { LevelUp } from 'levelup'
 
+type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
+
+type Obj = Record<string, EncodeableScalar | EncodeableContainer>
+type EncodeableContainer =
+    | Set<EncodeableScalar | EncodeableContainer | Obj>
+    | Map<
+          Omit<EncodeableScalar, 'undefined' | 'null'> | EncodeableContainer | Obj,
+          EncodeableScalar | EncodeableContainer | Obj
+      >
+    | Array<EncodeableScalar | EncodeableContainer | Obj>
+
 /**
- * Valid scalars/primitive types that can be stored.
+ * Valid types that can be stored/encoded.
  * see [borc supported types](https://github.com/dignifiedquire/borc#supported-types)
  */
-export type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
-export type EncodeableContainer =
-    | Set<EncodeableScalar | EncodeableContainer>
-    | Map<Omit<EncodeableScalar, 'undefined' | 'null'>, EncodeableScalar | EncodeableContainer>
-    | Array<EncodeableScalar | EncodeableContainer>
-
-type Encodeable = EncodeableScalar | EncodeableContainer | Record<string, EncodeableScalar | EncodeableContainer>
+export type Encodeable = EncodeableScalar | EncodeableContainer | Obj
 export type Storable = {
     readonly id: string | number
 } & Encodeable
