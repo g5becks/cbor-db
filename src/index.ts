@@ -1,2 +1,2 @@
-export { utils as backupUtils } from "./backup";
-export { DB as Depot } from "./db";
+export { utils as backupUtils } from './backup'
+export { DB } from './db'

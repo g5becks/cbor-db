@@ -1,10 +1,11 @@
 import { AbstractIteratorOptions } from 'abstract-leveldown'
 import BigNumber from 'bignumber.js'
 import { leveldb } from 'borc'
+import * as fs from 'fs'
 import level from 'level'
 import { LevelUp } from 'levelup'
-type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
-type EncodeableContainer =
+export type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
+export type EncodeableContainer =
     | Set<EncodeableScalar | EncodeableContainer>
     | Map<Omit<EncodeableScalar, 'undefined' | 'null'>, EncodeableScalar | EncodeableContainer>
     | Array<EncodeableScalar | EncodeableContainer>
@@ -14,14 +15,32 @@ export type Saveable = {
     id: string | number
 } & Encodeable
 
+const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null
+
 export class DB<T extends Saveable> {
     private readonly db: LevelUp
 
-    constructor(location: string) {
+    private constructor(location: string) {
         this.db = level(location, {
             keyEncoding: leveldb,
             valueEncoding: leveldb,
         })
+    }
+
+    /**  Creatss a new DB<T>, when running in node - this function check if
+     *  the provided location exists and try to create it if it doesn't
+     */
+    static create<T extends Saveable>(location: string): DB<T> {
+        if (isNode) {
+            try {
+                if (!fs.existsSync(location)) {
+                    fs.mkdirSync(location)
+                }
+            } catch (error) {
+                console.log(`error occurred creating directory at ${location}, ${error}`)
+            }
+        }
+        return new DB<T>(location)
     }
 
     private async all(where?: (item: T) => boolean, limit?: number): Promise<T[]> {

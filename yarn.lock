@@ -571,6 +571,11 @@
   dependencies:
     bignumber.js "*"
 
+"@types/browser-or-node@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/browser-or-node/-/browser-or-node-1.2.0.tgz#9c5073b58ffad7d93b5588f1be0c78581b204f9a"
+  integrity sha512-hLn4jvpZ804yQDu71YW7qNQDm045XmODoEOZohkH4jWb23AaPodhVM5qztG+XM54Oqw8X1dA4A7z49iNFGbrxA==
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
