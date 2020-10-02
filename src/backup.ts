@@ -1,7 +1,9 @@
+import { decodeAll, encode } from 'borc'
 import * as fs from 'fs'
+import { Transform } from 'readable-stream'
 import split from 'split2'
+import zlib from 'zlib'
 import { DB, Storable } from './db'
-import zlib = require('zlib')
 
 /**
  * Backup the db to a gzip file
@@ -17,37 +19,35 @@ function backup(db: DB<Storable>, location: fs.PathLike): Promise<void> {
  * Load the db from a backup.gz
  * @param location Location of the backup gz
  */
-function loadBackup(db: DB<any>, location: fs.PathLike): Promise<void> {
+function loadBackup(db: DB<Storable>, location: fs.PathLike): Promise<void> {
     return loadFromBackupStream(db, fs.createReadStream(location, 'utf8'))
 }
+
+const dec = (db: DB<Storable>, dbChain: Promise<void>) =>
+    new Transform({
+        transform(chunk) {
+            const [data] = decodeAll(chunk) as Storable[]
+            dbChain = dbChain.then(() => db.put(data))
+        },
+    })
 
 /**
  * Load the gziped backup from a stream
  */
-function loadFromBackupStream(db: DB<any>, source: NodeJS.ReadableStream): Promise<void> {
-    let dbChain = Promise.resolve()
-    source
-        .pipe(zlib.createGunzip())
-        .pipe(split())
-        .pipe(
-            through((str: string) => {
-                const data = JSON.parse(str)
-                dbChain = dbChain.then(() => db.put(data.key, data.value))
-            }),
-        )
+function loadFromBackupStream(db: DB<Storable>, source: NodeJS.ReadableStream): Promise<void> {
+    const dbChain = Promise.resolve()
+    source.pipe(zlib.createGunzip()).pipe(split()).pipe(dec(db, dbChain))
     return dbChain
 }
 
+const enc = new Transform({
+    transform(chunk) {
+        encode(chunk)
+    },
+})
 /** Returns a gzip backup stream */
-function createBackupStream(db: DB<any>): NodeJS.ReadableStream {
-    return db
-        .createReadStream()
-        .pipe(
-            through(function (this: any, data: any) {
-                this.queue(JSON.stringify(data) + '\n')
-            }),
-        )
-        .pipe(zlib.createGzip())
+function createBackupStream(db: DB<Storable>): NodeJS.ReadableStream {
+    return db.createReadStream().pipe(enc).pipe(zlib.createGzip())
 }
 
 export const utils = { backup, loadBackup, loadFromBackupStream, createBackupStream }

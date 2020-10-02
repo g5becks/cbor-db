@@ -33,11 +33,13 @@
     },
     "homepage": "https://github.com/g5becks/cbor-db#README",
     "dependencies": {
+        "@types/readable-stream": "^2.3.9",
         "archiver": "^5.0.2",
         "borc": "^2.1.2",
         "level": "^6.0.1",
         "level-mem": "^5.0.1",
         "levelup": "^4.4.0",
+        "readable-stream": "^3.6.0",
         "split2": "^3.2.2"
     },
     "devDependencies": {
