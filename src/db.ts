@@ -23,7 +23,10 @@ export class DB<T extends Storable> {
 
     private constructor(location: string | ':mem:') {
         if (location === ':mem:') {
-            this.db = levelMem()
+            this.db = levelMem({
+                keyEncoding: leveldb,
+                valueEncoding: leveldb,
+            })
             return
         }
         this.db = level(location, {
@@ -53,13 +56,16 @@ export class DB<T extends Storable> {
 
     private async all(where?: (item: T) => boolean, limit?: number): Promise<T[]> {
         const stream = this.db.createValueStream()
-        const result: T[] = []
+        let result: T[] = []
         return new Promise<T[]>((resolve, reject) => {
             stream
-                .on('data', function (data: T) {
-                    if (!!limit && !(result.length < limit)) return
-                    if (!!where && !where(data)) return
-                    result.push(data)
+                .on('data', function (data: T[]) {
+                    const [parsed] = data
+                    if (!!limit && result.length < limit !== true) return
+                    if (!!where && !where(parsed)) {
+                        return
+                    }
+                    result = result.concat(parsed)
                 })
                 .on('error', reject)
                 .on('end', () => resolve(result))
