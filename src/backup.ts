@@ -3,7 +3,7 @@ import * as fs from 'fs'
 import { Transform } from 'readable-stream'
 import split from 'split2'
 import zlib from 'zlib'
-import { DB, Storable } from './db'
+import { DB, Storable } from './index'
 
 /**
  * Backup the db to a gzip file
