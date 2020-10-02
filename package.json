@@ -7,7 +7,7 @@
     "scripts": {
         "build": "rm -rf dist && tsc",
         "lint:fix": "eslint --fix src/**",
-        "docs": "rm -rf ./docs; jsdoc --out ./docs",
+        "docs": "rm -rf ./docs; typedoc --out ./docs",
         "test": "jest"
     },
     "publishConfig": {
