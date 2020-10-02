@@ -1,9 +1,9 @@
 {
     "name": "cbor-db",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
-    "main": "./dist/index.js",
-    "types": "./dist/index.ts",
+    "main": "./dist/src/index.js",
+    "types": "./dist/src/index.ts",
     "scripts": {
         "build": "rm -rf dist && tsc",
         "lint:fix": "eslint --fix src/**",
