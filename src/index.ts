@@ -1,11 +1,10 @@
-import { AbstractIteratorOptions } from 'abstract-leveldown'
+import { AbstractIteratorOptions, ErrorCallback } from 'abstract-leveldown'
 import BigNumber from 'bignumber.js'
 import { leveldb } from 'borc'
 import * as fs from 'fs'
 import level from 'level'
 import levelMem from 'level-mem'
 import { LevelUp } from 'levelup'
-
 type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
 
 type Obj = Record<string, EncodeableScalar | EncodeableContainer>
@@ -35,7 +34,9 @@ export type Storable = {
 const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null
 
 /**
- *
+ * Handles all interactions with the level instance.
+ * Each DB instance stores objects of type T
+ * @typeParam T any type of shape {@link Storable}
  */
 export class DB<T extends Storable> {
     private readonly db: LevelUp
@@ -58,7 +59,9 @@ export class DB<T extends Storable> {
      *  When running in node - this method will attempt to check if
      *  the provided location exists and try to create it if it doesn't.
      *
-     *  {@param location} the directory to store database data.
+     * @typeParam T any type of shape {@link Storable}
+     *
+     *  @param location the directory to store database data.
      *  Pass the string ':mem:' to create an instance that uses
      *  [memdown](https://www.npmjs.com/package/memdown) instead.
      *
@@ -158,6 +161,23 @@ export class DB<T extends Storable> {
         return this.db.batch(keys.map((key) => ({ type: 'del', key })))
     }
 
+    async close(callback?: ErrorCallback): Promise<void> {
+        this.db.close(callback)
+    }
+    isOpen(): boolean {
+        return this.db.isOpen()
+    }
+    isClosed(): boolean {
+        return this.db.isClosed()
+    }
+
+    /*
+    emitted on given event
+    */
+    on(event: 'open' | 'ready' | 'closed' | 'opening' | 'closing', cb: () => void): this {
+        this.db.on(event, cb)
+        return this
+    }
     createReadStream(options?: AbstractIteratorOptions): NodeJS.ReadableStream {
         return this.db.createReadStream(options)
     }
