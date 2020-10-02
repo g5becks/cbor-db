@@ -22,12 +22,21 @@ type EncodeableContainer =
  * see [borc supported types](https://github.com/dignifiedquire/borc#supported-types)
  */
 export type Encodeable = EncodeableScalar | EncodeableContainer | Obj
+
+/**
+ * An type that will be stored inside the DB must have
+ * this shape. The id field is used as the key, all other fields
+ * must be {@link Encodeable}
+ */
 export type Storable = {
     readonly id: string | number
 } & Encodeable
 
 const isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null
 
+/**
+ *
+ */
 export class DB<T extends Storable> {
     private readonly db: LevelUp
 
@@ -45,8 +54,21 @@ export class DB<T extends Storable> {
         })
     }
 
-    /**  Creatss a new DB<T>, when running in node - this function check if
-     *  the provided location exists and try to create it if it doesn't
+    /**  Factory method for creating a new {@link DB<T>} instance.
+     *  When running in node - this method will attempt to check if
+     *  the provided location exists and try to create it if it doesn't.
+     *
+     *  {@param location} the directory to store database data.
+     *  Pass the string ':mem:' to create an instance that uses
+     *  [memdown](https://www.npmjs.com/package/memdown) instead.
+     *
+     *  ```typescript
+           type User = {
+             id: string
+             username: string
+           }
+     *     const userDB = DB.create<User>('/some/path/to/store/in')
+     *  ```
      */
     static create<T extends Storable>(location: string | ':mem:'): DB<T> {
         if (location === ':mem:') {
