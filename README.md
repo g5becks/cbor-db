@@ -30,7 +30,7 @@ npm i --save cbor-db
 ```typescript
 import { DB } from 'cbor-db'
 
-// Define a document type
+// Define a document type.
 // All documents must have an ID feild
 // that is of type string | number
 type Person = {
@@ -41,6 +41,8 @@ type Person = {
 }
 
 // Initialize a people database (Stored in /databases/people)
+// If running in node, the directory will be created if it
+// doesn't exist.
 const people = DB.create<Person>('/databases/people')
 
 // Store some people
@@ -56,7 +58,8 @@ const findPeopleOlderThan = async (age: number): Promise<Person[]> =>
     })
 
 // Find a person by their key (rejects if person is not found)
-people.get('John').then(/** { firstname: "John", lastname: "Doe", age: 32 } */)
+const getPersonById = async (id: number): Promise<Person> => people.get(1)
+// => Promise /** { firstname: "John", lastname: "Doe", age: 32 } *
 ```
 
 ## API
