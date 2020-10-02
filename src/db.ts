@@ -111,6 +111,8 @@ export class DB<T extends Storable> {
         return this.db.del(key)
     }
 
+    async delMany(keys: string | number): Promise<voida>
+
     createReadStream(options?: AbstractIteratorOptions): NodeJS.ReadableStream {
         return this.db.createReadStream(options)
     }
