@@ -1,9 +1,9 @@
 {
     "name": "cbor-db",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "An embedded database for typescript and nodejs. Built as a tiny wrapper around level using borc for encoding.",
     "main": "./dist/index.js",
-    "types": "/dist/index.ts",
+    "types": "./dist/index.d.ts",
     "scripts": {
         "build": "rm -rf dist && tsc",
         "lint:fix": "eslint --fix src/**",
