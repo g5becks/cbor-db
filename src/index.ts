@@ -8,6 +8,7 @@ import * as fs from 'fs'
 import level from 'level'
 import levelMem from 'level-mem'
 import { LevelUp } from 'levelup'
+import sub from 'subleveldown'
 type EncodeableScalar = boolean | number | string | undefined | Buffer | Date | RegExp | URL | BigNumber | null
 
 type Obj = Record<string, EncodeableScalar | EncodeableContainer>
@@ -42,9 +43,15 @@ const isNode = typeof process !== 'undefined' && process.versions != null && pro
  * @typeParam T any type of shape {@link Storable}
  */
 export class DB<T extends Storable> {
-    private readonly db: LevelUp
-
-    private constructor(location: string | ':mem:') {
+    protected readonly db: LevelUp
+    private constructor(location: string | ':mem:', subDb?: { db: LevelUp; prefix: string }) {
+        if (subDb) {
+            this.db = sub(subDb.db, subDb.prefix, {
+                keyEncoding: leveldb,
+                valueEncoding: leveldb,
+            })
+            return
+        }
         if (location === ':mem:') {
             this.db = levelMem({
                 keyEncoding: leveldb,
@@ -90,6 +97,15 @@ export class DB<T extends Storable> {
             }
         }
         return new DB<T>(location)
+    }
+
+    /**
+     * Creates a sub DB instance using {@link https://www.npmjs.com/package/subleveldown}
+     *
+     * @param prefix prefix of sub database
+     */
+    createSub<T extends Storable>(prefix: string): DB<T> {
+        return new DB<T>('', { db: this.db, prefix })
     }
 
     private async all(where?: (item: T) => boolean, limit?: number): Promise<T[]> {

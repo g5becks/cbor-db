@@ -41,7 +41,8 @@
         "level-mem": "^5.0.1",
         "levelup": "^4.4.0",
         "readable-stream": "^3.6.0",
-        "split2": "^3.2.2"
+        "split2": "^3.2.2",
+        "subleveldown": "^5.0.1"
     },
     "devDependencies": {
         "@types/bignumber.js": "^5.0.0",
@@ -51,6 +52,7 @@
         "@types/node": "^14.11.2",
         "@types/readable-stream": "^2.3.9",
         "@types/split2": "^2.1.6",
+        "@types/subleveldown": "^4.1.0",
         "@typescript-eslint/eslint-plugin": "^4.3.0",
         "@typescript-eslint/parser": "^4.3.0",
         "eslint": "^7.10.0",
